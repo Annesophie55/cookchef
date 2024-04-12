@@ -1,7 +1,10 @@
 import Header from "./components/Header";
-import Content from "./components/Content";
-import Footer from "./components/Footer";
+import Content from "./pages/HomePage/HomePage";
+import Footer from "./components/Footer/Footer";
 import styles from "./App.module.scss";
+// import { seedRecipes } from "./data/seed";
+
+// seedRecipes();
 
 function App() {
   return (
