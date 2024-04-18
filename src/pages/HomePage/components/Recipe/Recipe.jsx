@@ -1,11 +1,28 @@
-import { useState } from "react";
-import styles from "./Recipe.module.scss";
+import { useContext } from 'react';
+import { ApiContext } from '../../../../context/ApiContext';
+import styles from './Recipe.module.scss';
 
-function Recipe({ title, image }) {
-  const [liked, setLiked] = useState(false);
+function Recipe({ recipe: { title, image, liked, _id }, toggleLikedRecipe }) {
+  const BASE_URL_API = useContext(ApiContext);
 
-  function handleClick() {
-    setLiked(!liked); 
+  async function handleClick() {
+    try {
+      const response = await fetch(`${BASE_URL_API}/${_id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          liked: !liked,
+        }),
+      });
+      if (response.ok) {
+        const updatedRecipe = await response.json();
+        toggleLikedRecipe(updatedRecipe);
+      }
+    } catch (e) {
+      console.log('Erreur lors de la récupération des recettes:', e);
+    }
   }
 
   return (
@@ -13,9 +30,11 @@ function Recipe({ title, image }) {
       <div className={styles.imageContainer}>
         <img src={image} alt={title} />
       </div>
-      <div className={`${styles.recipeTitle} d-flex flex-column justify-content-center align-items-center`}>
-        <h3 className="mb-10">{ title }</h3>
-        <i className={ `fa-solid fa-heart ${liked ? 'text-primary' : ''} `}></i>
+      <div
+        className={`${styles.recipeTitle} d-flex flex-column justify-content-center align-items-center`}
+      >
+        <h3 className="mb-10">{title}</h3>
+        <i className={`fa-solid fa-heart ${liked ? 'text-primary' : ''}`}></i>
       </div>
     </div>
   );
