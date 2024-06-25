@@ -1,4 +1,4 @@
-@use '../assets/styles/mixins' as mixin;
+@use '../../assets/styles/mixins' as mixin;
 
 .header {
   position: relative;
@@ -8,6 +8,7 @@
   color: var(--primary-1);
   img {
     width: 130px;
+    cursor: pointer;
   }
 }
 
